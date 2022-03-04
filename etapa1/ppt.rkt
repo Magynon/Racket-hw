@@ -35,6 +35,7 @@
 (define T1 '((-1 2 2) (-2 1 2) (-2 2 3)))
 (define T2 '( (1 2 2)  (2 1 2)  (2 2 3)))
 (define T3 '((1 -2 2) (2 -1 2) (2 -2 3)))
+(define start '(3 4 5))
 
 
 ; TODO
@@ -130,11 +131,26 @@
 ; în urma aplicării transformărilor din Ts asupra ppt.
 ; Utilizați recursivitate pe coadă.
 (define (apply-matrix-transformations Ts ppt)
-  'your-code-here)
-
+  (if (null? Ts)
+      ppt
+      (cond
+        [(equal? (car Ts) 1)
+         (apply-matrix-transformations (cdr Ts) (multiply T1 ppt))
+         ]
+        [
+         (equal? (car Ts) 2)
+         (apply-matrix-transformations (cdr Ts) (multiply T2 ppt))
+         ]
+        [(equal? (car Ts) 3)
+         (apply-matrix-transformations (cdr Ts) (multiply T3 ppt))
+         ]
+      )
+      )
+)
 
 ; TODO
 ; Implementați o funcție care calculează al n-lea TPP
 ; din arbore, folosind funcțiile anterioare.
 (define (get-nth-ppt-from-matrix-transformations n)
-  'your-code-here)
+  (apply-matrix-transformations (get-transformations n) start)
+)
