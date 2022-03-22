@@ -53,7 +53,7 @@
 
 (exercițiul 2 : 40 puncte)
 (when (stream? (pairs naturals naturals))
-  (check-part 'a (/ 1 4) (stream->list (stream-take (pairs naturals (stream-rest naturals)) 20)) is
+  (check-part 'a (/ 1 4) (stream->list (stream-take (pairs naturals (stream-rest naturals)) 10)) is
               '((0 . 1) (0 . 2) (1 . 2) (0 . 3) (1 . 3) (2 . 3) (0 . 4) (1 . 4) (2 . 4) (3 . 4)))
   (check-part 'b (/ 1 4) (stream->list (stream-take (pairs squares (stream-rest squares)) 12)) is
               '((0 . 1) (0 . 4) (1 . 4) (0 . 9) (1 . 9) (4 . 9) (0 . 16) (1 . 16) (4 . 16) (9 . 16) (0 . 25) (1 . 25)))

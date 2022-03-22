@@ -77,7 +77,6 @@
 
 (define ppt-stream-in-tree-order
   (queue-aux (list '(3 4 5)))
-  ;'your-code-here
   )
 
 
@@ -153,21 +152,22 @@
 ;  - eliminarea perechilor de numere neprime între ele (care 
 ;    există în rezultatul funcției pairs, dar nu vor mai exista
 ;    în fluxul gh-pairs-stream)
+;
+;(define (generator G h)
+;  (if (>= (stream-first G) h)
+;      null
+;      (cons (list (stream-first G) h) (generator (stream-rest G) h))
+;   )
+; )
 
-(define (generator G h)
-  (if (>= (stream-first G) h)
-      null
-      (stream-cons (list (stream-first G) h) (generator (stream-rest G) h))
-   )
- )
+(define (stream-zip-with f s1 s2 G)
+  (if (>= (stream-first s1) (stream-first s2))
+                   (stream-zip-with f G (stream-rest s2) G)
+      (stream-cons (f (stream-first s1) (stream-first s2))
+                   (stream-zip-with f (stream-rest s1) s2 G))))
 
 (define (pairs G H)
-;  (let loop ((h (stream-first H)))
-;    (stream-cons (stream->list (generator G h)) (loop (stream-first (stream-rest H))))
-;    )
-    
-  ;(stream-cons (stream->list (generator G (stream-first H))) (pairs G (stream-rest H)))
-  'your-code-here
+  (stream-zip-with cons G H G)
  )
 
 ; TODO
@@ -200,18 +200,22 @@
 ;;      = (h^2 - g^2) / 2
 ;;    c = e^2 + f^2 = (h - g)^2 / 4 + (h + g)^2 / 4
 ;;      = (h^2 + g^2) / 2
+
+(define (aux-func stream)
+  (let* ([tuple (stream-first stream)]
+         [g (car tuple)]
+         [h (cdr tuple)]
+         [a (* g h)]
+         [b (quotient (- (* h h) (* g g)) 2)]
+         [c (quotient (+ (* h h) (* g g)) 2)]
+         [new-tuple (list a b c)])
+      (stream-cons new-tuple (aux-func (stream-rest stream)))
+    )
+  )
+
 (define ppt-stream-in-pair-order
-  (stream-cons (calculator ) ppt-stream-in-pair-order)
-  (apply (λ (tuple)
-                (let* ([g (car tuple)]
-                       [h (cdr tuple)]
-                       [a (* g h)]
-                       [b (div (- (* h h) (g * g)) 2)]
-                       [c (div (+ (* h h) (g * g)) 2)])
-                  (list a b c)
-                  )
-                )
-              gh-pairs-stream)
+  (aux-func gh-pairs-stream)
+  ;'your-code-here
 )
 
 
